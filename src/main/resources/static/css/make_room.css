@@ -1,0 +1,12 @@
+.make-form form label + label {
+    color: #aaa;
+    margin-left: 10px;
+}
+
+.make-form {
+    width: 600px;
+}
+
+.field-error p {
+    height: 20px;
+}

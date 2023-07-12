@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+
+    <link rel="stylesheet" href="/css/board_detail.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+<div class="header container">
+    <ul>
+        <li>
+            <a href="/make_study_room" class="element">스터디 생성하기</a>
+        </li>
+        <li>
+            <a href="/study_list" class="element">스터디 리스트</a>
+        </li>
+        <li>
+            <a href="/my_study_list" class="element">내 스터디</a>
+        </li>
+    </ul>
+</div>
+
+<div class="board container">
+    <p th:text="${board.title}" class="board-title">이거 어떻게 풀어요?</p>
+    <div class="board-create-date">
+        <p th:text="|작성일 : ${board.createDate}|">작성일 : 2022-11-13</p>
+    </div>
+    <p th:utext="${board.content}" class="board-content">어쩌구 저쩌구 푸는거 같은데 이렇게 푸는거 맞나요?</p>
+</div>
+
+<div class="empty">
+
+</div>
+
+<div th:each="comment : ${comment}" class="comment container">
+    <p th:text="|작성일 : ${comment.createDate}|" class="comment-create-date">작성일 : 2022-11-13</p>
+    <p th:text="${comment.member?.username}" class="comment-writer">임경석</p>
+    <p th:text="${comment.user?.name}" class="comment-writer"></p>
+    <p th:text="${comment.comment}" class="comment-content">그거 그렇게 푸는거 맞아요</p>
+</div>
+
+<div class="comment-write container">
+    <form th:action="@{/comment_write/{boardId}(boardId = ${board.id})}" method="post">
+            <textarea name="comment">
+
+            </textarea>
+        <div class="comment-button">
+            <input type="submit" value="댓글달기" class="btn btn-primary">
+        </div>
+    </form>
+</div>
+
+<div class="comment-footer container">
+    <a th:href="@{/submit_study/{roomId}(roomId = ${board.room.roomId})}">목록으로</a>
+</div>
+</body>
+</html>

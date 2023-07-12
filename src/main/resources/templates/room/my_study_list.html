@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/my_study_list.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+<div class="header container">
+    <ul>
+        <li>
+            <a href="/make_study_room" class="element">스터디 생성하기</a>
+        </li>
+        <li>
+            <a href="/study_list" class="element">스터디 리스트</a>
+        </li>
+        <li>
+            <a href="/my_study_list" class="element">내 스터디</a>
+        </li>
+    </ul>
+</div>
+
+<div class="list-wrap container">
+    <div th:each="myStudy : ${myStudy}" class="list">
+        <a th:text="${myStudy.room.roomName}" th:href="@{/submit_study/{roomId}(roomId = ${myStudy.room.roomId})}">토익 스터디</a>
+        <img src="/image/enter.png" width="20" height="20">
+    </div>
+</div>
+</body>
+</html>

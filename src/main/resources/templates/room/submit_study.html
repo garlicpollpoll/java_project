@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="/webjars/bootstrap/5.2.0/dist/css/bootstrap.min.css">
+    <script src="/webjars/bootstrap/5.2.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous" type="application/javascript"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/submit_study.css">
+
+    <style>
+        .field-error {
+            color: red;
+        }
+
+        input[type=checkbox] {
+            width: 20px;
+            height: 20px;
+            display: none;
+        }
+
+        input[type=checkbox] + label {
+            background-image: url("/image/unchecked.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+            width: 30px;
+            height: 30px;
+            display: inline-block;
+            z-index: 1;
+        }
+
+        input[type=checkbox]:checked + label {
+            background-image: url("/image/checked.png");
+        }
+    </style>
+</head>
+<body>
+<div class="header container">
+    <ul>
+        <li>
+            <a href="/make_study_room" class="element">스터디 생성하기</a>
+        </li>
+        <li>
+            <a href="/study_list" class="element">스터디 리스트</a>
+        </li>
+        <li>
+            <a href="/my_study_list" class="element">내 스터디</a>
+        </li>
+    </ul>
+</div>
+
+<div class="container submit-wrap">
+    <form th:action="@{/submit_study/{roomId}(roomId = ${study.roomId})}" method="post" enctype="multipart/form-data" th:object="${submit}">
+        <input type="file" name="submit" id="submit">
+        <label for="submit">파일선택</label>
+        <input type="submit" name="제출하기" class="btn btn-primary submit-button">
+
+        <div th:if="${#fields.hasGlobalErrors()}" class="global_error">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
+    </form>
+</div>
+
+<div th:if="${participate.status == T(com.study_site.java_project.web.enums.MemberStatus).OWNER}" class="container">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        회원 관리하기
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">회원관리</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div th:each="participate : ${checkList}" style="border-bottom: 1px solid #dddddd">
+                        <label th:text="${participate.member?.username}"></label>
+                        <label th:text="${participate.user?.name}"></label>
+                        <a th:href="@{/kick_out/member/{name}/{roomId}(name = ${participate.member?.username}, roomId = ${study.roomId})}" th:if="${participate.member?.username != null}">추방하기</a>
+                        <a th:href="@{/kick_out/user/{email}/{roomId}(email = ${participate.user?.email}, roomId = ${study.roomId})}" th:if="${participate.user?.email != null}">추방하기</a>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container participate">
+    <div th:each="participate : ${checkList}" class="participate">
+        <h3 th:text="${participate.member?.username}">임경석</h3>
+        <h3 th:text="${participate.user?.name}"></h3>
+        <input type="checkbox" name="monday" disabled="disabled" th:classappend="${participate.monday} == 'MONDAY' ? 'check' : ''">
+        <label></label>
+        <input type="checkbox" name="tuesday" disabled="disabled" th:classappend="${participate.tuesday} == 'TUESDAY' ? 'check' : ''">
+        <label></label>
+        <input type="checkbox" name="wednesday" disabled="disabled" th:classappend="${participate.wednesday} == 'WEDNESDAY' ? 'check' : ''">
+        <label></label>
+        <input type="checkbox" name="thursday" disabled="disabled" th:classappend="${participate.thursday} == 'THURSDAY' ? 'check' : ''">
+        <label></label>
+        <input type="checkbox" name="friday" disabled="disabled" th:classappend="${participate.friday} == 'FRIDAY' ? 'check' : ''">
+        <label></label>
+        <input type="checkbox" name="saturday" disabled="disabled" th:classappend="${participate.saturday} == 'SATURDAY' ? 'check' : ''">
+        <label></label>
+        <input type="checkbox" name="sunday" disabled="disabled" th:classappend="${participate.sunday} == 'SUNDAY' ? 'check' : ''">
+        <label></label>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th class="test">작성시간</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${board}">
+            <td th:text="${board.id}">1</td>
+            <td>
+                <a th:text="${board.title}" th:href="@{/board_detail/{boardId}(boardId = ${board.id})}">이거 어떻게 해요?</a>
+            </td>
+            <td th:text="${board.member?.username}" th:if="${board.member?.username != null}">임경석</td>
+            <td th:text="${board.user?.name}" th:if="${board.user?.name != null}"></td>
+            <td th:text="${board.createDate}">2022-11-12</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="page-wrap">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" th:href="@{/submit_study/{roomId}(roomId = ${study.roomId}, page = 1)}"><<</a>
+        </li>
+        <li th:each="page : ${pageCount}" class="page-item">
+            <a class="page-link" th:href="@{/submit_study/{roomId}/(roomId = ${study.roomId}, page=${page.value})}" th:text="${page.value}">1</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:href="@{/submit_study/{roomId}(roomId = ${study.roomId}, page = ${lastPage})}">>></a>
+        </li>
+    </ul>
+</div>
+
+<div class="btn-footer">
+    <a th:href="@{/board_write/{roomId}(roomId = ${study.roomId})}" class="btn btn-primary">글쓰기</a>
+</div>
+</body>
+<script>
+    $(document).ready(function () {
+        $(".check").prop("checked", true);
+    })
+</script>
+</html>

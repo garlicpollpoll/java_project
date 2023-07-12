@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/study_room_list.css">
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+<div class="header container">
+    <ul>
+        <li>
+            <a href="/make_study_room" class="element">스터디 생성하기</a>
+        </li>
+        <li>
+            <a href="/study_list" class="element">스터디 리스트</a>
+        </li>
+        <li>
+            <a href="/my_study_list" class="element">내 스터디</a>
+        </li>
+    </ul>
+</div>
+
+<div class="study-list-wrap container">
+    <div th:each="studyList : ${studyList}" class="study-list">
+        <a th:text="${studyList.roomName}" th:href="@{/study_room_detail/{roomId}(roomId = ${studyList.roomId})}" href="/">토익 스터디토익 스터디토익 스터디</a>
+        <p th:text="|마감 기한 : ${studyList.deadline}일|">마감 기한 : 3일</p>
+        <p th:text="|경고 횟수 : ${studyList.warning}회|">경고 횟수 : 3회</p>
+    </div>
+</div>
+</body>
+</html>
