@@ -48,18 +48,6 @@ google:
       secret: 6LdZr7IhAAAAANAq_R-Lo7vdx5H3fhS6KngcQ5wu
       url: https://www.google.com/recaptcha/api/siteverify
 
-cloud:
-  aws:
-    credentials:
-      accessKey: AKIASZNLEKKPEYCUXU5N
-      secretKey: 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
-    s3:
-      bucket: myjobpartners
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
-
 logging:
   level:
     org.hibernate.SQL: debug
